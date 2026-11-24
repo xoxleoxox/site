@@ -13,6 +13,7 @@ catalogs:
     '@vercel/analytics': ^2.0.1
     '@vercel/speed-insights': ^2.0.0
     '@sveltejs/adapter-auto': ^7.0.1
+    '@sveltejs/adapter-vercel': ^6.3.5
     '@sveltejs/kit': ^2.70.2
     'comark': ^0.6.2
     'comark-toml': ^0.1.2
@@ -35,5 +36,8 @@ minimumReleaseAgeIgnoreMissingTime: false
 # MARK: - dep opts
 strictPeerDependencies: true
 engineStrict: true
+# esbuild ships a native binary via a postinstall step; allow it to run.
+allowBuilds:
+  esbuild: true
 minimumReleaseAgeExclude:
   - comark-toml@0.1.2

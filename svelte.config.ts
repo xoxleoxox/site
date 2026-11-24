@@ -1,9 +1,9 @@
-import auto from '@sveltejs/adapter-auto'
+import vercel from '@sveltejs/adapter-vercel'
 import type { Config } from '@sveltejs/kit'
 
 const config = {
   kit: {
-    adapter: auto(),
+    adapter: vercel(),
   },
 } satisfies Config
 
