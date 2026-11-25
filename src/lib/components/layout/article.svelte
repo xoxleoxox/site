@@ -61,9 +61,12 @@
       z-index: 22;
       /* 窄屏保留「纸面盖住 hero」：hero 钉住一个视口，正文从下方滑上来盖住它 */
       margin-top: calc(-1 * var(--stage-transition-span));
-      /* 封面交接要正文至少一屏高：正文短于一屏时，hero 底部的 intro 会从正文下沿露出来，
-         靠到页底还会压住页脚。原作首页正文比一屏高，碰不到这条边界，所以原作没写 */
-      min-height: var(--stable-viewport-block);
+      /* 封面交接要正文不短于交接行程 S，否则滚到 d > A 就开始露底，页底还会压住页脚。
+         这里必须绑 S 而不是「一屏」：今天窄屏 S = 100lvh（app.css 的窄屏覆写），两者数值相同，
+         但 S 一旦调大（更慢的交接）这条就会跟着变够。
+         也别改成 dvh：地址栏出现时 dvh 比 lvh 小，纸面就盖不住了。
+         原作首页正文比一屏高，碰不到这条边界，所以原作没写 */
+      min-height: var(--stage-transition-span);
     }
 
     .article-content {
