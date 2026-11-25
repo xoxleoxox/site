@@ -61,18 +61,11 @@ note = "关于开发、设计、产品与分析的记录。"
 title = "简单记录"
 
 [[menu.entries]]
-code = "Constellation / 003"
-detail = "跨内容主题索引"
-href = "/constellations"
-note = "查看围绕同一主题的相关内容。"
-title = "星群"
-
-[[menu.entries]]
 code = "Fragment / 004"
 detail = "日常与个人体验的短篇文字"
 href = "/fragment"
 note = "观察、叙事与个人思考。"
-title = "碎片"
+title = "奥尔特云"
 
 [[menu.entries]]
 code = "Timeline / 005"
@@ -126,11 +119,7 @@ label = "简单记录"
 
 [[footer.navigation]]
 href = "/fragment"
-label = "碎片"
-
-[[footer.navigation]]
-href = "/constellations"
-label = "星群"
+label = "奥尔特云"
 
 [footer.signal]
 label = "最近更新"
