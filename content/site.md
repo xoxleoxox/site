@@ -99,8 +99,8 @@ copyright = "© 2026 lithium_peko"
 # 待申请后再启用
 # license_label = "CC BY-NC-SA"
 # license_href = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
-# icp_label = "萌 ICP 备 20263076 号"
-# icp_href = "https://icp.gov.moe/?keyword=20263076"
+icp_label = "萌ICP备20260623号"
+icp_href = "https://icp.gov.moe/?keyword=20260623"
 signature = "愿你能找到一些平静"
 
 [[footer.navigation]]
