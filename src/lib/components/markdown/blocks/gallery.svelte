@@ -30,25 +30,71 @@
   let can_previous = $state(false)
   let can_next = $state(false)
 
+  function figures() {
+    if (!scroller) return [] as HTMLElement[]
+    return Array.from(scroller.querySelectorAll('figure')) as HTMLElement[]
+  }
+
+  /** 每张图在「居中吸附」下对应的 scrollLeft */
+  function snap_positions() {
+    if (!scroller) return [] as number[]
+
+    const viewport = scroller.clientWidth
+    const max = Math.max(0, scroller.scrollWidth - viewport)
+
+    return figures().map((figure) =>
+      Math.min(
+        max,
+        Math.max(0, figure.offsetLeft - (viewport - figure.clientWidth) / 2),
+      ),
+    )
+  }
+
+  function current_index(positions: number[]) {
+    if (!scroller || positions.length === 0) return 0
+
+    const position = Math.abs(scroller.scrollLeft)
+    let nearest = 0
+
+    positions.forEach((candidate, index) => {
+      if (
+        Math.abs(candidate - position) <
+        Math.abs(positions[nearest] - position)
+      ) {
+        nearest = index
+      }
+    })
+
+    return nearest
+  }
+
   function measure() {
     if (!scroller) return
 
-    const max = scroller.scrollWidth - scroller.clientWidth
-    const position = Math.abs(scroller.scrollLeft)
+    const positions = snap_positions()
+    const index = current_index(positions)
 
-    scrollable = max > 4
-    can_previous = scrollable && position > 4
-    can_next = scrollable && position < max - 4
+    scrollable = positions.length > 1 && scroller.scrollWidth > scroller.clientWidth + 4
+    can_previous = scrollable && index > 0
+    can_next = scrollable && index < positions.length - 1
   }
 
   function scroll_by(direction: -1 | 1) {
     if (!scroller) return
 
-    const first = scroller.querySelector('figure')
-    const gap = 12
-    const step = first?.clientWidth ? first.clientWidth + gap : scroller.clientWidth * 0.9
+    const positions = snap_positions()
+    if (positions.length === 0) return
 
-    scroller.scrollBy({ left: direction * step, behavior: 'smooth' })
+    const target = positions[current_index(positions) + direction]
+    if (target === undefined) return
+
+    const reduce_motion = window.matchMedia('(prefers-reduced-motion: reduce)')
+      .matches
+
+    scroller.scrollTo({
+      left: target,
+      behavior: reduce_motion ? 'auto' : 'smooth',
+    })
   }
 
   $effect(() => {
