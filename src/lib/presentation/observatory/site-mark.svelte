@@ -11,7 +11,7 @@
     opacity: 0.78;
     pointer-events: none;
     background-color: var(--color-stage-ink-secondary);
-    -webkit-mask: url('/favicon-mask.webp') center / contain no-repeat;
-    mask: url('/favicon-mask.webp') center / contain no-repeat;
+    -webkit-mask: url('/site-mark.webp') center / contain no-repeat;
+    mask: url('/site-mark.webp') center / contain no-repeat;
   }
 </style>
