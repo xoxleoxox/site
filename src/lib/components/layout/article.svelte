@@ -59,7 +59,8 @@
     .article {
       position: relative;
       z-index: 22;
-      margin-top: calc(-1 * var(--stage-transition-span));
+      /* 窄屏 hero 不再 sticky，正文从 hero 下方正常接续 */
+      margin-top: 0;
     }
 
     .article-content {

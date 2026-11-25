@@ -157,12 +157,14 @@
       --stage-progress: 0;
       --stage-top: 0px;
 
-      height: calc(var(--stage-viewport) + var(--stage-scroll-span));
+      /* 窄屏不做「内容盖住 hero」那套：hero 只是页面顶部的一块，随页自然滚走 */
+      height: var(--stage-viewport);
       animation: none;
     }
 
     .stage-sticky {
-      position: sticky;
+      position: relative;
+      top: auto;
     }
 
     .stage-frame {
