@@ -263,7 +263,7 @@
     min-block-size: 0;
     /* 别铺满整屏：最大跟正文栏同宽，高度留出上下呼吸 */
     max-inline-size: min(100%, 48rem);
-    max-block-size: min(100%, 76vb);
+    max-block-size: 76vb;
     padding: 0;
     border: 0;
     background: transparent;
@@ -277,7 +277,8 @@
 
   .lightbox-image {
     max-inline-size: 100%;
-    max-block-size: 100%;
+    /* 直接用视口单位限制高度：stage 只有 max-height，百分比解析不出来 */
+    max-block-size: 76vb;
     inline-size: auto;
     block-size: auto;
     object-fit: contain;
