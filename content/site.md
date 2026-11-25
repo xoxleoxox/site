@@ -1,5 +1,5 @@
 +++
-title = "泠雨 Caelyreth"
+title = "xoxleoxoxのSPACE"
 description = "泠雨的个人站点。独立开发者、设计师与业余文字创作者，关注系统开发、AI 计算基础设施、开发者体验与 Agent Harness 设计，也记录关于时代与个人生活的思考。"
 
 [seo]
@@ -16,7 +16,7 @@ previous_aria_label = "上一页，当前为 {page}，共 {page_count} 页"
 next_aria_label = "下一页，当前为 {page}，共 {page_count} 页"
 
 [menu]
-field_note = "Caelyreth / 个人站点"
+field_note = "xoxleoxoxのSPACE / 个人站点"
 ornaments = [
   "档案 / 023",
   "RBK // 044",
@@ -103,7 +103,7 @@ title = "朋友"
 
 [footer]
 label = "站点信息"
-title = "Caelyreth"
+title = "xoxleoxoxのSPACE"
 statement = "Find the way to neverland."
 index_label = "站点索引"
 archive_label = "版本标记"

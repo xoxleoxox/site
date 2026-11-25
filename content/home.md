@@ -1,5 +1,5 @@
 +++
-title = "Caelyreth"
+title = "xoxleoxoxのSPACE"
 description = """
 这里是泠雨，独立开发者、设计师与业余文字创作者
 """
@@ -9,9 +9,9 @@ cabin_label = "舷窗 / 01"
 surface_label = "观测台"
 entry_label = "查看近况"
 about_label = "关于"
-social_label = "Caelyreth 链接"
+social_label = "xoxleoxox 链接"
 vfd_readout = "DEEP*VOID"
-vfd_title = "CAELYRETH"
+vfd_title = "XOXLEOXOX"
 vfd_refresh_readouts = ["RX//ORBIT", "STAR*DRFT", "VOID*LINK", "SCAN+076"]
 
 [[observatory.social_links]]

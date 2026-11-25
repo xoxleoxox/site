@@ -19,7 +19,7 @@ export function sitemap_document(entries: SitemapEntry[]) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <title>站点地图 / Caelyreth</title>
+    <title>站点地图 / xoxleoxoxのSPACE</title>
     <link rel="stylesheet" href="/sitemap.css" />
   </head>
   <body>
@@ -27,7 +27,7 @@ export function sitemap_document(entries: SitemapEntry[]) {
       <header>
         <div>
           <h1>站点地图</h1>
-          <p>Caelyreth 公开页面索引。</p>
+          <p>xoxleoxoxのSPACE 公开页面索引。</p>
         </div>
         <div class="count">${entries.length} 条路径</div>
       </header>
