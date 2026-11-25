@@ -104,15 +104,19 @@
     <div class="tail">
       <div class="tail-meta">
         <span>{footer.copyright}</span>
-        <a class="tail-link" href={footer.license_href}
-          >{footer.license_label}</a
-        >
-        <a
-          class="tail-link"
-          href={footer.icp_href}
-          rel="noopener noreferrer"
-          target="_blank">{footer.icp_label}</a
-        >
+        {#if footer.license_href && footer.license_label}
+          <a class="tail-link" href={footer.license_href}
+            >{footer.license_label}</a
+          >
+        {/if}
+        {#if footer.icp_href && footer.icp_label}
+          <a
+            class="tail-link"
+            href={footer.icp_href}
+            rel="noopener noreferrer"
+            target="_blank">{footer.icp_label}</a
+          >
+        {/if}
       </div>
       <span class="tail-signature">{footer.signature}</span>
     </div>

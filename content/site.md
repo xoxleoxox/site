@@ -96,10 +96,11 @@ atom_href = "/atom.xml"
 rss_label = "RSS"
 rss_href = "/rss.xml"
 copyright = "© 2026 lithium_peko"
-license_label = "CC BY-NC-SA"
-license_href = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
-icp_label = "萌 ICP 备 20263076 号"
-icp_href = "https://icp.gov.moe/?keyword=20263076"
+# 待申请后再启用
+# license_label = "CC BY-NC-SA"
+# license_href = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+# icp_label = "萌 ICP 备 20263076 号"
+# icp_href = "https://icp.gov.moe/?keyword=20263076"
 signature = "愿你能找到一些平静"
 
 [[footer.navigation]]
