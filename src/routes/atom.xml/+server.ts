@@ -23,7 +23,7 @@ export const GET: RequestHandler = async ({ url }) => {
       return `  <entry>
     <title>${escape_xml(entry.title)}</title>
     <link href="${escape_xml(link)}" />
-    <id>urn:caelyreth:entry:${escape_xml(entry.collection)}:${escape_xml(entry.id)}</id>
+    <id>urn:xoxleoxox:entry:${escape_xml(entry.collection)}:${escape_xml(entry.id)}</id>
     <published>${feed_iso_date(entry.published)}</published>
     <updated>${feed_iso_date(entry.updated)}</updated>
     <summary type="text">${escape_xml(entry.summary)}</summary>
