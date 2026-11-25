@@ -13,7 +13,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="color-scheme" content="light dark" />
-        <title>站点地图 / Caelyreth</title>
+        <title>站点地图 / xoxleoxoxのSPACE</title>
         <link rel="stylesheet" href="sitemap.css" />
       </head>
       <body>
@@ -21,7 +21,7 @@
           <header>
             <div>
               <h1>站点地图</h1>
-              <p>Caelyreth 深空站公开路径索引。</p>
+              <p>xoxleoxoxのSPACE 公开路径索引。</p>
             </div>
             <div class="count">
               <xsl:value-of select="count(sitemap:urlset/sitemap:url)" />

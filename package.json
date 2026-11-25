@@ -1,7 +1,7 @@
 {
-  "name": "@caelyreth/site",
+  "name": "@xoxleoxox/site",
   "license": "EUPL-1.2",
-  "author": "Yu <me@iki.moe>",
+  "author": "xoxleoxox",
   "type": "module",
   "scripts": {
     "fmt": "oxfmt",
