@@ -33,7 +33,7 @@
   data-layout={active_layout}
   role="group"
   aria-label={label}
-  tabindex="0"
+  tabindex={active_layout === 'scroll' ? 0 : undefined}
 >
   {@render children?.()}
 </div>
@@ -64,11 +64,33 @@
     display: none;
   }
 
+  /* 桌面端 hover / 聚焦时露出细滚动条，暗示可横向滚动 */
+  .gallery[data-layout='scroll']:hover,
+  .gallery[data-layout='scroll']:focus-visible {
+    scrollbar-width: thin;
+  }
+
+  .gallery[data-layout='scroll']:hover::-webkit-scrollbar,
+  .gallery[data-layout='scroll']:focus-visible::-webkit-scrollbar {
+    display: block;
+    block-size: 6px;
+  }
+
+  .gallery[data-layout='scroll']::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--color-rule) 70%, transparent);
+  }
+
   .gallery[data-layout='scroll'] :global(figure) {
     flex: 0 0 min(86%, 26rem);
     inline-size: auto;
     margin: 0;
     scroll-snap-align: center;
+  }
+
+  /* 只有一张图时不留「下一页」的空白 */
+  .gallery[data-layout='scroll'] :global(figure:only-child) {
+    flex-basis: 100%;
   }
 
   /* 九宫格式：两列网格 */
@@ -86,12 +108,6 @@
   @media (width < 34rem) {
     .gallery[data-layout='grid'] {
       grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .gallery[data-layout='scroll'] {
-      scroll-behavior: auto;
     }
   }
 </style>
