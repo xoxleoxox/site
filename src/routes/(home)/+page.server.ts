@@ -1,5 +1,8 @@
 import { entry_collections } from '$lib/content/entries'
-import { all_entry_entries } from '$lib/content/entries.server'
+import {
+  all_entry_entries,
+  collection_labels,
+} from '$lib/content/entries.server'
 import { extract_headings } from '$lib/content/headings'
 import { content_dependency } from '$lib/content/hmr'
 import { read_content } from '$lib/content/query.server'
@@ -18,16 +21,18 @@ export const load: PageServerLoad = async ({ depends }) => {
   })
   depends(content_dependency('constellations'))
 
-  const [home, entries, constellations] = await Promise.all([
+  const [home, entries, constellations, labels] = await Promise.all([
     read_content('home', home_frontmatter_schema),
     all_entry_entries(),
     constellation_source.documents(),
+    collection_labels(),
   ])
   if (!home) throw new Error('Missing content/home.md.')
 
   const indexed_entries = entry_index(entries, constellations)
 
   return {
+    collection_labels: labels,
     document: home.document,
     recent: indexed_entries.slice(0, 6),
     toc: extract_headings(home.document.nodes),

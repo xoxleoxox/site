@@ -15,6 +15,11 @@ export interface EntryLink {
   title: string
 }
 
+export interface CollectionLabel {
+  meta_label: string
+  title: string
+}
+
 export function is_entry_collection(
   value: string,
 ): value is EntryCollection {

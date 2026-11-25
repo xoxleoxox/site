@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { entry_path } from '$lib/content/entries'
+  import {
+    entry_path,
+    type CollectionLabel,
+    type EntryCollection,
+  } from '$lib/content/entries'
   import type { EntrySummary } from '$lib/content/relations'
   import { site_href } from '$lib/navigation/path'
 
@@ -7,15 +11,13 @@
   import { format_published_date } from './date'
 
   interface Props {
+    collection_labels: Record<EntryCollection, CollectionLabel>
     items: EntrySummary[]
   }
 
-  let { items }: Props = $props()
+  let { collection_labels, items }: Props = $props()
 
-  const collection_labels = {
-    records: '简单记录',
-    fragment: '碎片',
-  } as const
+  const browse_collection = 'fragment' satisfies EntryCollection
 </script>
 
 <section class="recent-archive" aria-labelledby="recent-archive-title">
@@ -24,7 +26,9 @@
       <p class="micro-label">近期归档</p>
       <h2 id="recent-archive-title">最新内容</h2>
     </div>
-    <a href={site_href('/constellations')}>查看星群</a>
+    <a href={site_href(entry_path(browse_collection))}
+      >查看{collection_labels[browse_collection].title}</a
+    >
   </header>
 
   {#if items.length}
@@ -41,7 +45,7 @@
                   >{format_published_date(item.published)}</time
                 >
                 <span class="recent-kind"
-                  >{collection_labels[item.collection]}</span
+                  >{collection_labels[item.collection].meta_label}</span
                 >
               </div>
               <h3>{item.title}</h3>

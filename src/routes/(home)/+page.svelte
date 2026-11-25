@@ -13,5 +13,8 @@
   title={data.document.frontmatter.title}
 />
 
-<RecentArchive items={data.recent} />
+<RecentArchive
+  collection_labels={data.collection_labels}
+  items={data.recent}
+/>
 <Content document={data.document} font={data.document.frontmatter.font} />

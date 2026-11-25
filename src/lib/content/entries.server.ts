@@ -2,6 +2,7 @@ import {
   entry_collections,
   entry_path,
   type CollectionEntry,
+  type CollectionLabel,
   type EntryCollection,
   type EntryLink,
 } from './entries'
@@ -70,6 +71,30 @@ async function collection_document(collection: EntryCollection) {
   )
   if (!document) throw new Error(`Missing content/${collection}.md.`)
   return document.document
+}
+
+export type { CollectionLabel }
+
+export async function collection_labels(): Promise<
+  Record<EntryCollection, CollectionLabel>
+> {
+  const labels = await Promise.all(
+    entry_collections.map(async (collection) => {
+      const document = await collection_document(collection)
+      return [
+        collection,
+        {
+          meta_label: document.frontmatter.meta_label,
+          title: document.frontmatter.title,
+        },
+      ] as const
+    }),
+  )
+
+  return Object.fromEntries(labels) as Record<
+    EntryCollection,
+    CollectionLabel
+  >
 }
 
 export async function collection_page(
