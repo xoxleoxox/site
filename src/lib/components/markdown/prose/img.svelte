@@ -152,12 +152,6 @@
         <img class="lightbox-image" {src} {alt} decoding="async" />
       </button>
     {/if}
-    <a
-      class="lightbox-original"
-      href={src}
-      target="_blank"
-      rel="noopener noreferrer">原图</a
-    >
   </dialog>
 {/if}
 
@@ -256,8 +250,6 @@
   .lightbox[open] {
     display: grid;
     place-items: center;
-    gap: 0.75rem;
-    grid-template-rows: minmax(0, 1fr) auto;
   }
 
   .lightbox::backdrop {
@@ -269,8 +261,9 @@
     place-items: center;
     min-inline-size: 0;
     min-block-size: 0;
-    max-inline-size: 100%;
-    max-block-size: 100%;
+    /* 别铺满整屏：最大跟正文栏同宽，高度留出上下呼吸 */
+    max-inline-size: min(100%, 48rem);
+    max-block-size: min(100%, 76vb);
     padding: 0;
     border: 0;
     background: transparent;
@@ -326,14 +319,6 @@
   .lightbox-close:focus-visible {
     outline: 2px solid var(--color-focus);
     outline-offset: 2px;
-  }
-
-  .lightbox-original {
-    justify-self: center;
-    color: color-mix(in oklab, #fff 82%, transparent);
-    font-size: 0.75rem;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
   }
 
   :global(body:has(.lightbox[open])) {
