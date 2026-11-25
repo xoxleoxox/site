@@ -282,9 +282,9 @@
           <span aria-hidden="true">›</span>
         </button>
         <p class="lightbox-count" aria-live="polite">
-          {active_index + 1} / {siblings.length}{active_alt
-            ? `：${active_alt}`
-            : ''}
+          {active_index + 1} / {siblings.length}{#if active_alt}<span
+              class="sr-only">：{active_alt}</span
+            >{/if}
         </p>
       {/if}
     {/if}
