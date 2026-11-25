@@ -59,8 +59,11 @@
     .article {
       position: relative;
       z-index: 22;
-      /* 窄屏 hero 不再 sticky，正文从 hero 下方正常接续 */
-      margin-top: 0;
+      /* 窄屏保留「纸面盖住 hero」：hero 钉住一个视口，正文从下方滑上来盖住它 */
+      margin-top: calc(-1 * var(--stage-transition-span));
+      /* 封面交接要正文至少一屏高：正文短于一屏时，hero 底部的 intro 会从正文下沿露出来，
+         靠到页底还会压住页脚。原作首页正文比一屏高，碰不到这条边界，所以原作没写 */
+      min-height: var(--stable-viewport-block);
     }
 
     .article-content {

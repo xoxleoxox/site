@@ -157,14 +157,13 @@
       --stage-progress: 0;
       --stage-top: 0px;
 
-      /* 窄屏不做「内容盖住 hero」那套：hero 只是页面顶部的一块，随页自然滚走 */
-      height: var(--stage-viewport);
+      /* 窄屏仍保留一个视口的滚动行程：hero 钉住，正文滑上来盖住它 */
+      height: calc(var(--stage-viewport) + var(--stage-scroll-span));
       animation: none;
     }
 
     .stage-sticky {
-      position: relative;
-      top: auto;
+      position: sticky;
     }
 
     .stage-frame {
