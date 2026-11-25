@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { fly } from 'svelte/transition'
 
   interface Props extends Record<string, unknown> {
     alt?: string
@@ -41,6 +42,7 @@
   /** 同一篇正文里的图，放大后可左右切换 */
   let siblings: HTMLImageElement[] = $state([])
   let active_index = $state(0)
+  let slide_direction = $state(0)
   let touch_start_x: number | null = null
   let ignore_click = false
 
@@ -78,22 +80,42 @@
       ? Array.from(root.querySelectorAll<HTMLImageElement>('.media-frame img'))
       : []
 
-    siblings = found.length > 0 ? found : image ? [image] : []
+    // 加载失败的图不参与切换（当前这张除外，否则点它会没有落点）
+    siblings = (found.length > 0 ? found : image ? [image] : []).filter(
+      (candidate) => candidate === image || candidate.naturalWidth > 0,
+    )
+
     const index = image ? siblings.indexOf(image) : -1
     active_index = index >= 0 ? index : 0
+    slide_direction = 0
 
     lightbox_open = true
     lightbox.showModal()
   }
 
   function close_lightbox() {
+    ignore_click = false
     lightbox?.close()
   }
 
   function navigate(step: -1 | 1) {
     const next = active_index + step
-    if (next < 0 || next >= siblings.length) return
+    if (next < 0 || next >= siblings.length) return false
+
+    slide_direction = step
     active_index = next
+    return true
+  }
+
+  /** 切换动效；减动效偏好下不做位移和淡入 */
+  function slide_transition() {
+    const reduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (reduced) return { duration: 0 }
+
+    return { x: slide_direction * 24, duration: 220, opacity: 0 }
   }
 
   function lightbox_keydown(event: KeyboardEvent) {
@@ -121,13 +143,15 @@
 
     if (Math.abs(distance) < 40) return
 
+    const changed = navigate(distance < 0 ? 1 : -1)
+    if (!changed) return
+
     // 滑动换图之后浏览器还会补一次 click，别让它把预览关掉；
     // 有些环境不补 click，所以定时复位，避免吞掉下一次点击
     ignore_click = true
     setTimeout(() => {
       ignore_click = false
     }, 400)
-    navigate(distance < 0 ? 1 : -1)
   }
 
   function stage_click() {
@@ -202,10 +226,13 @@
   <dialog
     bind:this={lightbox}
     class="lightbox"
-    aria-label={alt ? `图片预览：${alt}` : '图片预览'}
+    aria-label={active_alt ? `图片预览：${active_alt}` : '图片预览'}
     onclick={lightbox_click}
     onkeydown={lightbox_keydown}
-    onclose={() => (lightbox_open = false)}
+    onclose={() => {
+      lightbox_open = false
+      ignore_click = false
+    }}
   >
     <button
       type="button"
@@ -224,7 +251,15 @@
         ontouchstart={stage_touch_start}
         ontouchend={stage_touch_end}
       >
-        <img class="lightbox-image" src={active_src} alt={active_alt} decoding="async" />
+        {#key active_index}
+          <img
+            class="lightbox-image"
+            src={active_src}
+            alt={active_alt}
+            decoding="async"
+            in:fly={slide_transition()}
+          />
+        {/key}
       </button>
 
       {#if has_siblings}
@@ -247,7 +282,9 @@
           <span aria-hidden="true">›</span>
         </button>
         <p class="lightbox-count" aria-live="polite">
-          {active_index + 1} / {siblings.length}
+          {active_index + 1} / {siblings.length}{active_alt
+            ? `：${active_alt}`
+            : ''}
         </p>
       {/if}
     {/if}
@@ -381,16 +418,6 @@
     inline-size: auto;
     block-size: auto;
     object-fit: contain;
-    animation: lightbox-fade-in 160ms ease-out;
-  }
-
-  @keyframes lightbox-fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
   }
 
   .lightbox-close {
@@ -480,10 +507,6 @@
   @media (prefers-reduced-motion: reduce) {
     img {
       transition: none;
-    }
-
-    .lightbox-image {
-      animation: none;
     }
   }
 </style>
