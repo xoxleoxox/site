@@ -32,6 +32,8 @@
   }: Props = $props()
 
   let image: HTMLImageElement | undefined = $state()
+  let lightbox: HTMLDialogElement | undefined = $state()
+  let lightbox_open = $state(false)
   let media_state: MediaState = $state('pending')
   let current_src: string | undefined
   let source_initialized = false
@@ -53,6 +55,21 @@
 
   function image_failed() {
     media_state = 'failed'
+  }
+
+  function open_lightbox() {
+    if (!lightbox || lightbox.open) return
+    lightbox.showModal()
+    lightbox_open = true
+  }
+
+  function close_lightbox() {
+    lightbox?.close()
+  }
+
+  function lightbox_click(event: MouseEvent) {
+    // 点遮罩（dialog 本体、而非图片或工具条）时关闭
+    if (event.target === lightbox) close_lightbox()
   }
 
   $effect(() => {
@@ -92,6 +109,14 @@
       onload={image_loaded}
     />
     <span aria-hidden="true" class="media-failure">图片无法显示</span>
+    {#if src && media_state === 'ready'}
+      <button
+        type="button"
+        class="media-zoom"
+        aria-label={alt ? `放大图片：${alt}` : '放大图片'}
+        onclick={open_lightbox}
+      ></button>
+    {/if}
   </div>
   {#if title}<figcaption>{title}</figcaption>{/if}
   {#if media_state === 'failed'}
@@ -100,6 +125,32 @@
     >
   {/if}
 </figure>
+
+{#if src}
+  <dialog
+    bind:this={lightbox}
+    class="lightbox"
+    aria-label={alt ? `图片预览：${alt}` : '图片预览'}
+    onclick={lightbox_click}
+    onclose={() => (lightbox_open = false)}
+  >
+    <button
+      type="button"
+      class="lightbox-close"
+      aria-label="关闭预览"
+      onclick={close_lightbox}
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+    <img class="lightbox-image" {src} {alt} data-open={lightbox_open} />
+    <a
+      class="lightbox-original"
+      href={src}
+      target="_blank"
+      rel="noopener noreferrer">原图</a
+    >
+  </dialog>
+{/if}
 
 <style>
   figure {
@@ -162,8 +213,109 @@
     line-height: 1.45;
   }
 
+  /* 点击放大的透明命中层：覆盖在图片上，保持图片语义不变 */
+  .media-zoom {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: zoom-in;
+  }
+
+  .media-zoom:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
+  }
+
+  .lightbox {
+    inline-size: 100vi;
+    block-size: 100vb;
+    max-inline-size: 100vi;
+    max-block-size: 100vb;
+    margin: 0;
+    padding: clamp(1rem, 4vi, 3rem);
+    border: 0;
+    background: transparent;
+    cursor: zoom-out;
+  }
+
+  .lightbox[open] {
+    display: grid;
+    place-items: center;
+    gap: 0.75rem;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .lightbox::backdrop {
+    background: color-mix(in oklab, #000 84%, transparent);
+  }
+
+  .lightbox-image {
+    max-inline-size: 100%;
+    max-block-size: 100%;
+    inline-size: auto;
+    block-size: auto;
+    object-fit: contain;
+    cursor: default;
+    opacity: 0;
+    transition: opacity 160ms ease-out;
+  }
+
+  .lightbox-image[data-open='true'] {
+    opacity: 1;
+  }
+
+  .lightbox-close {
+    position: fixed;
+    inset-block-start: clamp(0.75rem, 3vi, 1.5rem);
+    inset-inline-end: clamp(0.75rem, 3vi, 1.5rem);
+    display: grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    padding: 0;
+    border: 1px solid color-mix(in oklab, #fff 35%, transparent);
+    border-radius: 999px;
+    background: color-mix(in oklab, #000 45%, transparent);
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .lightbox-close:hover,
+  .lightbox-close:focus-visible {
+    background: color-mix(in oklab, #000 65%, transparent);
+  }
+
+  .lightbox-close:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .lightbox-original {
+    justify-self: center;
+    color: color-mix(in oklab, #fff 82%, transparent);
+    font-size: 0.75rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  :global(body:has(.lightbox[open])) {
+    overflow: hidden;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     img {
+      transition: none;
+    }
+
+    .lightbox-image {
       transition: none;
     }
   }
