@@ -35,19 +35,39 @@
     return Array.from(scroller.querySelectorAll('figure')) as HTMLElement[]
   }
 
-  /** 每张图在「居中吸附」下对应的 scrollLeft */
-  function snap_positions() {
+  /**
+   * 每张图在「居中吸附」下对应的 scrollLeft。
+   *
+   * 依赖 .gallery 自身不是定位元素（offsetParent 落在 position:relative 的
+   * .gallery-shell 上）、shell 无 padding/border、.gallery 没有 padding-inline、
+   * figure 的 margin 为 0；若以后给 .gallery 加左右 padding，这里要改成
+   * 用 getBoundingClientRect 重算。
+   *
+   * 视口足够宽时多张图的居中位置会被 clamp 到 0 / max 而重复，重复值会让
+   * 「按索引前进」原地不动，所以去重 + 升序，只保留真正能停住的吸附点。
+   */
+  function snap_targets() {
     if (!scroller) return [] as number[]
 
     const viewport = scroller.clientWidth
     const max = Math.max(0, scroller.scrollWidth - viewport)
 
-    return figures().map((figure) =>
+    const positions = figures().map((figure) =>
       Math.min(
         max,
         Math.max(0, figure.offsetLeft - (viewport - figure.clientWidth) / 2),
       ),
     )
+
+    const unique: number[] = []
+
+    for (const position of positions) {
+      if (!unique.some((known) => Math.abs(known - position) <= 4)) {
+        unique.push(position)
+      }
+    }
+
+    return unique.sort((a, b) => a - b)
   }
 
   function current_index(positions: number[]) {
@@ -71,7 +91,7 @@
   function measure() {
     if (!scroller) return
 
-    const positions = snap_positions()
+    const positions = snap_targets()
     const index = current_index(positions)
 
     scrollable = positions.length > 1 && scroller.scrollWidth > scroller.clientWidth + 4
@@ -82,7 +102,7 @@
   function scroll_by(direction: -1 | 1) {
     if (!scroller) return
 
-    const positions = snap_positions()
+    const positions = snap_targets()
     if (positions.length === 0) return
 
     const target = positions[current_index(positions) + direction]
