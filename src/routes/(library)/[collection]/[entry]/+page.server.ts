@@ -16,7 +16,6 @@ export const entries: EntryGenerator = entry_route_entries
 export const load: PageServerLoad = async ({ depends, params }) => {
   const collection = entry_collection_param(params.collection)
   depends(content_dependency(`${collection}/${params.entry}`))
-  depends(content_dependency('constellations'))
   const entry = await entry_page(collection, params.entry)
   if (!entry) throw error(404, '未找到内容')
 

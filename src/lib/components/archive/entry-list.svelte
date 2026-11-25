@@ -5,21 +5,18 @@
   import { site_href } from '$lib/navigation/path'
 
   import ArchiveList from './archive-list.svelte'
-  import ConstellationLinks from './constellation-links.svelte'
   import { format_published_date } from './date'
 
   interface Props {
     collection?: EntryCollection
     entries: EntrySummary[]
     show_collection?: boolean
-    show_constellations?: boolean
   }
 
   let {
     collection,
     entries,
     show_collection = false,
-    show_constellations = true,
   }: Props = $props()
   const library = get_library_config()
 </script>
@@ -48,11 +45,6 @@
           <p>{entry.summary}</p>
         </div>
       </a>
-      {#if show_constellations}
-        <div class="entry-constellations">
-          <ConstellationLinks constellations={entry.constellations} />
-        </div>
-      {/if}
     </li>
   {/each}
 </ArchiveList>
@@ -107,10 +99,6 @@
     color: var(--color-text-secondary);
     font-size: 0.875rem;
     line-height: 1.65;
-  }
-
-  .entry-constellations {
-    margin: -0.1rem 0 1.25rem;
   }
 
   .entry-link:focus-visible {

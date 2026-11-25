@@ -2,28 +2,22 @@
   import PaperSeam from '$lib/components/layout/paper-seam.svelte'
   import Content from '$lib/components/markdown/document.svelte'
   import type { EntryCollection } from '$lib/content/entries'
-  import type {
-    ConstellationIndexDocument,
-    EntryIndexDocument,
-  } from '$lib/content/schema'
+  import type { EntryIndexDocument } from '$lib/content/schema'
   import type { Snippet } from 'svelte'
 
   import IndexHeader from './index-header.svelte'
   import Pagination from './pagination.svelte'
   import ReadingPlane from './reading-plane.svelte'
 
-  type ArchiveIndexKind = 'constellations' | EntryCollection
-
-  const empty_messages: Record<ArchiveIndexKind, string> = {
-    constellations: '暂时没有可显示的星群。',
+  const empty_messages: Record<EntryCollection, string> = {
     records: '当前没有可供检索的记录。',
     fragment: '当前没有可显示的文字。',
   }
 
   interface Props {
     children: Snippet
-    document: ConstellationIndexDocument | EntryIndexDocument
-    kind: ArchiveIndexKind
+    document: EntryIndexDocument
+    kind: EntryCollection
     page: number
     page_count: number
     path: string

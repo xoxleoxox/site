@@ -2,7 +2,7 @@
   import type { EntryCollection } from '$lib/content/entries'
   import type { Snippet } from 'svelte'
 
-  export type ReadingPlaneKind = 'constellations' | EntryCollection
+  export type ReadingPlaneKind = EntryCollection
 
   interface Props {
     children: Snippet
@@ -13,7 +13,6 @@
 </script>
 
 <section
-  class:constellations={kind === 'constellations'}
   class:records={kind === 'records'}
   class:fragment={kind === 'fragment'}
   class="reading-plane"
@@ -49,10 +48,6 @@
 
   .reading-plane.fragment {
     --plane-measure: 48rem;
-  }
-
-  .reading-plane.constellations {
-    --plane-measure: 58rem;
   }
 
   .reading-plane-inner {

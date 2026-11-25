@@ -104,17 +104,6 @@ export const entry_index_frontmatter_schema = v.strictObject({
   meta_label: v.string(),
 })
 
-export const constellation_index_frontmatter_schema = v.strictObject({
-  ...index_document_fields,
-  back_label: v.string(),
-  detail_label: v.string(),
-  entry_count_label: v.string(),
-  entries_label: v.string(),
-  entries_navigation_label: v.string(),
-  related_label: v.string(),
-  related_navigation_label: v.string(),
-})
-
 export const site_config_schema = v.strictObject({
   comments: comments_schema,
   description: v.string(),
@@ -176,10 +165,6 @@ export const entry_frontmatter_schema = v.strictObject({
   updated: v.optional(v.pipe(v.string(), v.isoDate())),
 })
 
-export const constellation_frontmatter_schema = v.strictObject(
-  indexed_document_fields,
-)
-
 export type ContentFont = v.InferOutput<typeof content_font_schema>
 export type HomeFrontmatter = v.InferOutput<typeof home_frontmatter_schema>
 export type PageFrontmatter = v.InferOutput<typeof page_frontmatter_schema>
@@ -190,15 +175,9 @@ export type FriendsFrontmatter = v.InferOutput<
 export type EntryIndexFrontmatter = v.InferOutput<
   typeof entry_index_frontmatter_schema
 >
-export type ConstellationIndexFrontmatter = v.InferOutput<
-  typeof constellation_index_frontmatter_schema
->
 export type SiteConfig = v.InferOutput<typeof site_config_schema>
 export type EntryFrontmatter = v.InferOutput<
   typeof entry_frontmatter_schema
->
-export type ConstellationFrontmatter = v.InferOutput<
-  typeof constellation_frontmatter_schema
 >
 
 export type HomeDocument = MarkdownDocument<
@@ -221,19 +200,9 @@ export type EntryIndexDocument = MarkdownDocument<
   EntryIndexFrontmatter
 >
 
-export type ConstellationIndexDocument = MarkdownDocument<
-  Record<string, unknown>,
-  ConstellationIndexFrontmatter
->
-
 export type EntryDocument = MarkdownDocument<
   Record<string, unknown>,
   EntryFrontmatter
->
-
-export type ConstellationDocument = MarkdownDocument<
-  Record<string, unknown>,
-  ConstellationFrontmatter
 >
 
 export interface ContentEntry<Frontmatter> {

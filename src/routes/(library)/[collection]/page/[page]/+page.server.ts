@@ -16,7 +16,6 @@ export const entries: EntryGenerator = collection_page_entries
 export const load: PageServerLoad = async ({ depends, params }) => {
   const collection = entry_collection_param(params.collection)
   depends(content_dependency(collection))
-  depends(content_dependency('constellations'))
   const page = page_number(params.page)
   if (!page || page === 1) throw error(404, '未找到内容页')
 

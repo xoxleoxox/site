@@ -9,8 +9,7 @@ import {
 import { page_count, paginate, read_content } from './query.server'
 import { entry_index } from './relations'
 import { entry_index_frontmatter_schema } from './schema'
-import { constellation_source, entry_source } from './sources.server'
-
+import { entry_source } from './sources.server'
 export { entry_source } from './sources.server'
 
 export async function all_entry_entries(): Promise<CollectionEntry[]> {
@@ -101,16 +100,15 @@ export async function collection_page(
   collection: EntryCollection,
   page: number,
 ) {
-  const [entries, constellations, document] = await Promise.all([
+  const [entries, document] = await Promise.all([
     all_entry_entries(),
-    constellation_source.documents(),
     collection_document(collection),
   ])
 
   return {
     document,
     entries: paginate(
-      entry_index(entries, constellations).filter(
+      entry_index(entries).filter(
         (entry) => entry.collection === collection,
       ),
       page,
@@ -119,11 +117,7 @@ export async function collection_page(
 }
 
 export async function collection_page_entries() {
-  const [entries, constellations] = await Promise.all([
-    all_entry_entries(),
-    constellation_source.documents(),
-  ])
-  const indexed = entry_index(entries, constellations)
+  const indexed = entry_index(await all_entry_entries())
 
   return entry_collections.flatMap((collection) =>
     Array.from(
@@ -150,20 +144,18 @@ export function entry_route_entries() {
 }
 
 export async function entry_page(collection: EntryCollection, id: string) {
-  const [entry, entries, constellations] = await Promise.all([
+  const [entry, entries] = await Promise.all([
     entry_source(collection).document(id),
     all_entry_entries(),
-    constellation_source.documents(),
   ])
   if (!entry) return undefined
 
-  const summary = entry_index(entries, constellations).find(
+  const summary = entry_index(entries).find(
     (current) => current.collection === collection && current.id === id,
   )
   if (!summary) return undefined
 
   return {
-    constellations: summary.constellations,
     document: entry.document,
   }
 }

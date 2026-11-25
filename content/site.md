@@ -61,28 +61,21 @@ note = "关于开发、设计、产品与分析的记录。"
 title = "简单记录"
 
 [[menu.entries]]
-code = "Fragment / 004"
+code = "Fragment / 002"
 detail = "日常与个人体验的短篇文字"
 href = "/fragment"
 note = "观察、叙事与个人思考。"
 title = "奥尔特云"
 
 [[menu.entries]]
-code = "Timeline / 005"
-detail = "项目与坐标"
-href = "/timeline"
-note = "正在进行的开源工作与更长的个人时间线。"
-title = "项目与时间线"
-
-[[menu.entries]]
-code = "About / 006"
+code = "About / 003"
 detail = "lithium_peko正在进行的工作"
 href = "/about"
 note = "个人资料与近况。"
 title = "关于"
 
 [[menu.entries]]
-code = "Friends / 007"
+code = "Friends / 004"
 detail = "同行者与朋友"
 href = "/friends"
 note = "一些仍在创作、构建与思考的人。"

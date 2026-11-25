@@ -19,19 +19,13 @@ export const GET: RequestHandler = async ({ url }) => {
   const items = entries
     .map((entry) => {
       const link = site_url(entry.path, url)
-      const categories = entry.constellations
-        .map(
-          (constellation) =>
-            `\n    <category term="${escape_xml(constellation.id)}" label="${escape_xml(constellation.title)}" />`,
-        )
-        .join('')
 
       return `  <entry>
     <title>${escape_xml(entry.title)}</title>
     <link href="${escape_xml(link)}" />
     <id>urn:caelyreth:entry:${escape_xml(entry.collection)}:${escape_xml(entry.id)}</id>
     <published>${feed_iso_date(entry.published)}</published>
-    <updated>${feed_iso_date(entry.updated)}</updated>${categories}
+    <updated>${feed_iso_date(entry.updated)}</updated>
     <summary type="text">${escape_xml(entry.summary)}</summary>
   </entry>`
     })

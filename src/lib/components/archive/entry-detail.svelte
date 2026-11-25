@@ -3,12 +3,10 @@
   import Content from '$lib/components/markdown/document.svelte'
   import { entry_path, type EntryCollection } from '$lib/content/entries'
   import { get_library_config } from '$lib/content/library'
-  import type { ConstellationReference } from '$lib/content/relations'
   import type { EntryDocument, SiteConfig } from '$lib/content/schema'
   import { site_href } from '$lib/navigation/path'
 
   import BackLink from './back-link.svelte'
-  import ConstellationLinks from './constellation-links.svelte'
   import { format_published_date } from './date'
   import EntryHeader from './entry-header.svelte'
   import ReadingPlane from './reading-plane.svelte'
@@ -16,11 +14,10 @@
   interface Props {
     comments: SiteConfig['comments']
     collection: EntryCollection
-    constellations: ConstellationReference[]
     document: EntryDocument
   }
 
-  let { comments, collection, constellations, document }: Props = $props()
+  let { comments, collection, document }: Props = $props()
   const library = get_library_config()
   const collection_config = $derived(library.current.entries[collection])
   const collection_href = $derived(site_href(entry_path(collection)))
@@ -35,11 +32,7 @@
       meta={`${collection_config.meta_label} / ${format_published_date(document.frontmatter.published, 'long')}`}
       summary={document.frontmatter.summary}
       title={document.frontmatter.title}
-    >
-      {#snippet children()}
-        <ConstellationLinks {constellations} />
-      {/snippet}
-    </EntryHeader>
+    />
 
     <div class="entry-body">
       <Content {document} font={document.frontmatter.font} />

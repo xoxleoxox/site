@@ -24,6 +24,5 @@
 <EntryDetail
   comments={site.current.comments}
   collection={data.collection}
-  constellations={data.constellations}
   document={data.document}
 />

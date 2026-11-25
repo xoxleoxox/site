@@ -1,22 +1,11 @@
 import { entry_collections, type EntryCollection } from './entries'
 import { content_query } from './query.server'
-import {
-  constellation_frontmatter_schema,
-  entry_frontmatter_schema,
-} from './schema'
-
-export const constellation_source = content_query(
-  'constellations',
-  constellation_frontmatter_schema,
-)
+import { entry_frontmatter_schema } from './schema'
 
 const entry_sources = new Map(
   entry_collections.map(
     (collection) =>
-      [
-        collection,
-        content_query(collection, entry_frontmatter_schema),
-      ] as const,
+      [collection, content_query(collection, entry_frontmatter_schema)] as const,
   ),
 )
 
