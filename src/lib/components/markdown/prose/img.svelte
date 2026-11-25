@@ -38,6 +38,19 @@
   let current_src: string | undefined
   let source_initialized = false
 
+  /** 同一篇正文里的图，放大后可左右切换 */
+  let siblings: HTMLImageElement[] = $state([])
+  let active_index = $state(0)
+  let touch_start_x: number | null = null
+  let ignore_click = false
+
+  const active_image = $derived(siblings[active_index])
+  const active_src = $derived(active_image?.src ?? src)
+  const active_alt = $derived(active_image?.alt ?? alt)
+  const has_siblings = $derived(siblings.length > 1)
+  const can_previous = $derived(has_siblings && active_index > 0)
+  const can_next = $derived(has_siblings && active_index < siblings.length - 1)
+
   const aspect_ratio = $derived.by(() => {
     const image_width = positive_number(width)
     const image_height = positive_number(height)
@@ -59,12 +72,71 @@
 
   function open_lightbox() {
     if (!lightbox || lightbox.open) return
+
+    const root = image?.closest('.comark-content') ?? image?.closest('article')
+    const found = root
+      ? Array.from(root.querySelectorAll<HTMLImageElement>('.media-frame img'))
+      : []
+
+    siblings = found.length > 0 ? found : image ? [image] : []
+    const index = image ? siblings.indexOf(image) : -1
+    active_index = index >= 0 ? index : 0
+
     lightbox_open = true
     lightbox.showModal()
   }
 
   function close_lightbox() {
     lightbox?.close()
+  }
+
+  function navigate(step: -1 | 1) {
+    const next = active_index + step
+    if (next < 0 || next >= siblings.length) return
+    active_index = next
+  }
+
+  function lightbox_keydown(event: KeyboardEvent) {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault()
+      navigate(-1)
+    }
+
+    if (event.key === 'ArrowRight') {
+      event.preventDefault()
+      navigate(1)
+    }
+  }
+
+  function stage_touch_start(event: TouchEvent) {
+    touch_start_x = event.touches[0]?.clientX ?? null
+  }
+
+  function stage_touch_end(event: TouchEvent) {
+    if (touch_start_x === null) return
+
+    const end = event.changedTouches[0]?.clientX ?? touch_start_x
+    const distance = end - touch_start_x
+    touch_start_x = null
+
+    if (Math.abs(distance) < 40) return
+
+    // 滑动换图之后浏览器还会补一次 click，别让它把预览关掉；
+    // 有些环境不补 click，所以定时复位，避免吞掉下一次点击
+    ignore_click = true
+    setTimeout(() => {
+      ignore_click = false
+    }, 400)
+    navigate(distance < 0 ? 1 : -1)
+  }
+
+  function stage_click() {
+    if (ignore_click) {
+      ignore_click = false
+      return
+    }
+
+    close_lightbox()
   }
 
   function lightbox_click(event: MouseEvent) {
@@ -132,6 +204,7 @@
     class="lightbox"
     aria-label={alt ? `图片预览：${alt}` : '图片预览'}
     onclick={lightbox_click}
+    onkeydown={lightbox_keydown}
     onclose={() => (lightbox_open = false)}
   >
     <button
@@ -147,10 +220,36 @@
         type="button"
         class="lightbox-stage"
         aria-label="关闭预览"
-        onclick={close_lightbox}
+        onclick={stage_click}
+        ontouchstart={stage_touch_start}
+        ontouchend={stage_touch_end}
       >
-        <img class="lightbox-image" {src} {alt} decoding="async" />
+        <img class="lightbox-image" src={active_src} alt={active_alt} decoding="async" />
       </button>
+
+      {#if has_siblings}
+        <button
+          type="button"
+          class="lightbox-arrow previous"
+          aria-label="上一张"
+          disabled={!can_previous}
+          onclick={() => navigate(-1)}
+        >
+          <span aria-hidden="true">‹</span>
+        </button>
+        <button
+          type="button"
+          class="lightbox-arrow next"
+          aria-label="下一张"
+          disabled={!can_next}
+          onclick={() => navigate(1)}
+        >
+          <span aria-hidden="true">›</span>
+        </button>
+        <p class="lightbox-count" aria-live="polite">
+          {active_index + 1} / {siblings.length}
+        </p>
+      {/if}
     {/if}
   </dialog>
 {/if}
@@ -320,6 +419,58 @@
   .lightbox-close:focus-visible {
     outline: 2px solid var(--color-focus);
     outline-offset: 2px;
+  }
+
+  .lightbox-arrow {
+    position: fixed;
+    inset-block-start: 50%;
+    display: grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    padding: 0;
+    border: 1px solid color-mix(in oklab, #fff 35%, transparent);
+    border-radius: 999px;
+    background: color-mix(in oklab, #000 45%, transparent);
+    color: #fff;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+
+  .lightbox-arrow.previous {
+    inset-inline-start: clamp(0.75rem, 3vi, 1.5rem);
+  }
+
+  .lightbox-arrow.next {
+    inset-inline-end: clamp(0.75rem, 3vi, 1.5rem);
+  }
+
+  .lightbox-arrow:hover:not(:disabled) {
+    background: color-mix(in oklab, #000 65%, transparent);
+  }
+
+  .lightbox-arrow:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .lightbox-arrow:disabled {
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .lightbox-count {
+    position: fixed;
+    inset-block-end: clamp(0.75rem, 3vi, 1.5rem);
+    inset-inline: 0;
+    z-index: 1;
+    margin: 0 auto;
+    color: color-mix(in oklab, #fff 78%, transparent);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
   }
 
   :global(body:has(.lightbox[open])) {
