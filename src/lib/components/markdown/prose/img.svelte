@@ -143,7 +143,14 @@
       <span aria-hidden="true">×</span>
     </button>
     {#if lightbox_open}
-      <img class="lightbox-image" {src} {alt} decoding="async" />
+      <button
+        type="button"
+        class="lightbox-stage"
+        aria-label="关闭预览"
+        onclick={close_lightbox}
+      >
+        <img class="lightbox-image" {src} {alt} decoding="async" />
+      </button>
     {/if}
     <a
       class="lightbox-original"
@@ -172,7 +179,7 @@
     background: var(--color-prose-surface);
   }
 
-  img {
+  .media-frame img {
     position: absolute;
     inset: 0;
     inline-size: 100%;
@@ -183,11 +190,11 @@
     transition: opacity 260ms ease-out;
   }
 
-  figure[data-state='ready'] img {
+  figure[data-state='ready'] .media-frame img {
     opacity: 1;
   }
 
-  figure[data-state='failed'] img {
+  figure[data-state='failed'] .media-frame img {
     opacity: 0;
   }
 
@@ -257,13 +264,30 @@
     background: color-mix(in oklab, #000 84%, transparent);
   }
 
+  .lightbox-stage {
+    display: grid;
+    place-items: center;
+    min-inline-size: 0;
+    min-block-size: 0;
+    max-inline-size: 100%;
+    max-block-size: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: zoom-out;
+  }
+
+  .lightbox-stage:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+  }
+
   .lightbox-image {
     max-inline-size: 100%;
     max-block-size: 100%;
     inline-size: auto;
     block-size: auto;
     object-fit: contain;
-    cursor: default;
     animation: lightbox-fade-in 160ms ease-out;
   }
 
