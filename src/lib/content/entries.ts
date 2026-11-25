@@ -1,6 +1,6 @@
 import type { ContentEntry, EntryFrontmatter } from './schema'
 
-export const entry_collections = ['records', 'voidknot'] as const
+export const entry_collections = ['records', 'fragment'] as const
 
 export type EntryCollection = (typeof entry_collections)[number]
 

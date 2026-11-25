@@ -15,7 +15,7 @@
 <section
   class:constellations={kind === 'constellations'}
   class:records={kind === 'records'}
-  class:voidknot={kind === 'voidknot'}
+  class:fragment={kind === 'fragment'}
   class="reading-plane"
 >
   <div class="reading-plane-inner">
@@ -47,7 +47,7 @@
     --plane-measure: 45rem;
   }
 
-  .reading-plane.voidknot {
+  .reading-plane.fragment {
     --plane-measure: 48rem;
   }
 

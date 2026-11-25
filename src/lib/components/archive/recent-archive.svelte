@@ -14,7 +14,7 @@
 
   const collection_labels = {
     records: '简单记录',
-    voidknot: '虚空之结',
+    fragment: '碎片',
   } as const
 </script>
 

@@ -17,7 +17,7 @@
   const empty_messages: Record<ArchiveIndexKind, string> = {
     constellations: '暂时没有可显示的星群。',
     records: '当前没有可供检索的记录。',
-    voidknot: '当前没有可显示的文字。',
+    fragment: '当前没有可显示的文字。',
   }
 
   interface Props {

@@ -1,6 +1,6 @@
 +++
 title = "xoxleoxoxのSPACE"
-description = "泠雨的个人站点。独立开发者、设计师与业余文字创作者，关注系统开发、AI 计算基础设施、开发者体验与 Agent Harness 设计，也记录关于时代与个人生活的思考。"
+description = "lithium_peko的个人站点。"
 
 [seo]
 locale = "zh_CN"
@@ -61,13 +61,6 @@ note = "关于开发、设计、产品与分析的记录。"
 title = "简单记录"
 
 [[menu.entries]]
-code = "VoidKnot / 002"
-detail = "日常与个人体验的短篇文字"
-href = "/voidknot"
-note = "观察、叙事与个人思考。"
-title = "虚空之结"
-
-[[menu.entries]]
 code = "Constellation / 003"
 detail = "跨内容主题索引"
 href = "/constellations"
@@ -76,8 +69,9 @@ title = "星群"
 
 [[menu.entries]]
 code = "Fragment / 004"
-detail = "短暂记录"
-note = "WIP，用不了！"
+detail = "日常与个人体验的短篇文字"
+href = "/fragment"
+note = "观察、叙事与个人思考。"
 title = "碎片"
 
 [[menu.entries]]
@@ -89,7 +83,7 @@ title = "项目与时间线"
 
 [[menu.entries]]
 code = "About / 006"
-detail = "泠雨与正在进行的工作"
+detail = "lithium_peko正在进行的工作"
 href = "/about"
 note = "个人资料与近况。"
 title = "关于"
@@ -107,7 +101,7 @@ title = "xoxleoxoxのSPACE"
 statement = "Find the way to neverland."
 index_label = "站点索引"
 archive_label = "版本标记"
-archive_detail = "RBK / 2026 / 泠雨"
+archive_detail = "RBK / 2026 / lithium_peko"
 qr_label = "页面路径"
 sitemap_label = "站点地图"
 sitemap_href = "/sitemap.xml"
@@ -115,7 +109,7 @@ atom_label = "Atom"
 atom_href = "/atom.xml"
 rss_label = "RSS"
 rss_href = "/rss.xml"
-copyright = "© 2026 泠雨"
+copyright = "© 2026 lithium_peko"
 license_label = "CC BY-NC-SA"
 license_href = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
 icp_label = "萌 ICP 备 20263076 号"
@@ -131,8 +125,8 @@ href = "/records"
 label = "简单记录"
 
 [[footer.navigation]]
-href = "/voidknot"
-label = "虚空之结"
+href = "/fragment"
+label = "碎片"
 
 [[footer.navigation]]
 href = "/constellations"

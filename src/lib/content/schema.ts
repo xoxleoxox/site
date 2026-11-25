@@ -95,7 +95,7 @@ const friend_schema = v.strictObject({
 
 export const friends_frontmatter_schema = v.strictObject({
   ...document_fields,
-  friends: v.array(friend_schema),
+  friends: v.optional(v.array(friend_schema), []),
 })
 
 export const entry_index_frontmatter_schema = v.strictObject({
@@ -147,7 +147,7 @@ export const site_config_schema = v.strictObject({
     title: v.string(),
   }),
   menu: v.strictObject({
-    entries: v.pipe(v.array(menu_item_schema), v.length(7)),
+    entries: v.pipe(v.array(menu_item_schema), v.minLength(1)),
     field_note: v.string(),
     ornaments: v.pipe(v.array(v.string()), v.length(16)),
   }),

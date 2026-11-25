@@ -28,7 +28,7 @@
   {#each entries as entry}
     <li
       class:records={collection === 'records'}
-      class:voidknot={collection === 'voidknot'}
+      class:fragment={collection === 'fragment'}
       class="entry-item"
     >
       <a
@@ -140,17 +140,17 @@
     line-height: 1.55;
   }
 
-  .entry-item.voidknot .entry-link {
+  .entry-item.fragment .entry-link {
     padding-block: clamp(1.6rem, 3.4vw, 2.5rem)
       clamp(1.1rem, 2.2vw, 1.65rem);
   }
 
-  .entry-item.voidknot h2 {
+  .entry-item.fragment h2 {
     font-size: clamp(1.4rem, 2.4vw, 1.9rem);
     line-height: 1.24;
   }
 
-  .entry-item.voidknot p {
+  .entry-item.fragment p {
     max-width: 35rem;
     font-size: 0.9375rem;
   }
