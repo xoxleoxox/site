@@ -59,8 +59,8 @@
 
   function open_lightbox() {
     if (!lightbox || lightbox.open) return
-    lightbox.showModal()
     lightbox_open = true
+    lightbox.showModal()
   }
 
   function close_lightbox() {
@@ -142,7 +142,9 @@
     >
       <span aria-hidden="true">×</span>
     </button>
-    <img class="lightbox-image" {src} {alt} data-open={lightbox_open} />
+    {#if lightbox_open}
+      <img class="lightbox-image" {src} {alt} decoding="async" />
+    {/if}
     <a
       class="lightbox-original"
       href={src}
@@ -262,12 +264,16 @@
     block-size: auto;
     object-fit: contain;
     cursor: default;
-    opacity: 0;
-    transition: opacity 160ms ease-out;
+    animation: lightbox-fade-in 160ms ease-out;
   }
 
-  .lightbox-image[data-open='true'] {
-    opacity: 1;
+  @keyframes lightbox-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   .lightbox-close {
@@ -316,7 +322,7 @@
     }
 
     .lightbox-image {
-      transition: none;
+      animation: none;
     }
   }
 </style>
